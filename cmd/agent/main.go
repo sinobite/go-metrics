@@ -127,7 +127,7 @@ func sendMetric(m Monitor) {
 }
 
 func doRequest(metricType string, metricName string, metricValue string, client http.Client) error {
-	request, err := http.NewRequest(http.MethodPost, "http://localhost:8087/update/counter/someMetric/527", nil)
+	request, err := http.NewRequest(http.MethodPost, "http://localhost:8080/update/counter/someMetric/527", nil)
 	if err != nil {
 		return err
 	}
