@@ -47,8 +47,7 @@ func updateMetricHandler(writer http.ResponseWriter, request *http.Request) {
 
 			memStorage.Gauges[metricName] = gaugeValue
 			writer.WriteHeader(http.StatusOK)
-		}
-		if metricType == "counter" {
+		} else if metricType == "counter" {
 			counterValue, err := convertToCounter(metricValue)
 			if err != nil {
 				writer.WriteHeader(http.StatusBadRequest)
@@ -56,8 +55,10 @@ func updateMetricHandler(writer http.ResponseWriter, request *http.Request) {
 
 			memStorage.Counters[metricName] = memStorage.Counters[metricName] + counterValue
 			writer.WriteHeader(http.StatusOK)
+		} else {
+			writer.WriteHeader(http.StatusBadRequest)
+
 		}
-		writer.WriteHeader(http.StatusBadRequest)
 
 	} else {
 		writer.WriteHeader(http.StatusNotFound)
@@ -68,7 +69,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/update/{metricType}/{metricName}/{metricValue}", updateMetricHandler)
 
-	err := http.ListenAndServe("localhost:8080", mux)
+	err := http.ListenAndServe("localhost:8087", mux)
 	if err != nil {
 		panic(err)
 	}
