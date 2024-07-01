@@ -24,8 +24,8 @@ func main() {
 	}()
 	go func() {
 		for {
-			sendMetric(m)
 			time.Sleep(10 * time.Second)
+			sendMetric(m)
 		}
 	}()
 
