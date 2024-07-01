@@ -126,17 +126,19 @@ func doRequest(metricType string, metricName string, metricValue string, client 
 	request, err := http.NewRequest(http.MethodPost, "http://localhost:8080/update/counter/someMetric/527", nil)
 	if err != nil {
 		panic(err)
-
-		return
 	}
 
 	request.SetPathValue("metricType", metricType)
 	request.SetPathValue("metricName", metricName)
 	request.SetPathValue("metricValue", metricValue)
 
-	_, err = client.Do(request)
+	resp, err := client.Do(request)
 	if err != nil {
 		panic(err)
 	}
 
+	err = resp.Body.Close()
+	if err != nil {
+		panic(err)
+	}
 }
