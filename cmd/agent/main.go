@@ -90,59 +90,53 @@ func sendMetric(m Monitor) {
 
 	fmt.Println("sendMetric")
 
-	err := doRequest("gauge", "Alloc", strconv.Itoa(int(m.Alloc)), *client)
-	err = doRequest("gauge", "BuckHashSys", strconv.Itoa(int(m.BuckHashSys)), *client)
-	err = doRequest("gauge", "Frees", strconv.Itoa(int(m.Frees)), *client)
-	err = doRequest("gauge", "GCCPUFraction", strconv.Itoa(int(m.GCCPUFraction)), *client)
-	err = doRequest("gauge", "GCSys", strconv.Itoa(int(m.GCSys)), *client)
-	err = doRequest("gauge", "HeapAlloc", strconv.Itoa(int(m.HeapAlloc)), *client)
-	err = doRequest("gauge", "HeapIdle", strconv.Itoa(int(m.HeapIdle)), *client)
-	err = doRequest("gauge", "HeapInuse", strconv.Itoa(int(m.HeapInuse)), *client)
-	err = doRequest("gauge", "HeapObjects", strconv.Itoa(int(m.HeapObjects)), *client)
-	err = doRequest("gauge", "HeapReleased", strconv.Itoa(int(m.HeapReleased)), *client)
-	err = doRequest("gauge", "HeapSys", strconv.Itoa(int(m.HeapSys)), *client)
-	err = doRequest("gauge", "LastGC", strconv.Itoa(int(m.LastGC)), *client)
-	err = doRequest("gauge", "Lookups", strconv.Itoa(int(m.Lookups)), *client)
-	err = doRequest("gauge", "MCacheInuse", strconv.Itoa(int(m.MCacheInuse)), *client)
-	err = doRequest("gauge", "MCacheSys", strconv.Itoa(int(m.MCacheSys)), *client)
-	err = doRequest("gauge", "MSpanInuse", strconv.Itoa(int(m.MSpanInuse)), *client)
-	err = doRequest("gauge", "MSpanSys", strconv.Itoa(int(m.MSpanSys)), *client)
-	err = doRequest("gauge", "Mallocs", strconv.Itoa(int(m.Mallocs)), *client)
-	err = doRequest("gauge", "NextGC", strconv.Itoa(int(m.NextGC)), *client)
-	err = doRequest("gauge", "NumForcedGC", strconv.Itoa(int(m.NumForcedGC)), *client)
-	err = doRequest("gauge", "NumGC", strconv.Itoa(int(m.NumGC)), *client)
-	err = doRequest("gauge", "OtherSys", strconv.Itoa(int(m.OtherSys)), *client)
-	err = doRequest("gauge", "PauseTotalNs", strconv.Itoa(int(m.PauseTotalNs)), *client)
-	err = doRequest("gauge", "StackInuse", strconv.Itoa(int(m.StackInuse)), *client)
-	err = doRequest("gauge", "StackSys", strconv.Itoa(int(m.StackSys)), *client)
-	err = doRequest("gauge", "Sys", strconv.Itoa(int(m.Sys)), *client)
-	err = doRequest("gauge", "TotalAlloc", strconv.Itoa(int(m.TotalAlloc)), *client)
-	err = doRequest("counter", "PollCount", strconv.Itoa(int(m.PollCount)), *client)
-	err = doRequest("gauge", "RandomValue", strconv.Itoa(int(m.RandomValue)), *client)
-
-	if err != nil {
-		panic(err)
-	}
+	doRequest("gauge", "Alloc", strconv.Itoa(int(m.Alloc)), *client)
+	doRequest("gauge", "BuckHashSys", strconv.Itoa(int(m.BuckHashSys)), *client)
+	doRequest("gauge", "Frees", strconv.Itoa(int(m.Frees)), *client)
+	doRequest("gauge", "GCCPUFraction", strconv.Itoa(int(m.GCCPUFraction)), *client)
+	doRequest("gauge", "GCSys", strconv.Itoa(int(m.GCSys)), *client)
+	doRequest("gauge", "HeapAlloc", strconv.Itoa(int(m.HeapAlloc)), *client)
+	doRequest("gauge", "HeapIdle", strconv.Itoa(int(m.HeapIdle)), *client)
+	doRequest("gauge", "HeapInuse", strconv.Itoa(int(m.HeapInuse)), *client)
+	doRequest("gauge", "HeapObjects", strconv.Itoa(int(m.HeapObjects)), *client)
+	doRequest("gauge", "HeapReleased", strconv.Itoa(int(m.HeapReleased)), *client)
+	doRequest("gauge", "HeapSys", strconv.Itoa(int(m.HeapSys)), *client)
+	doRequest("gauge", "LastGC", strconv.Itoa(int(m.LastGC)), *client)
+	doRequest("gauge", "Lookups", strconv.Itoa(int(m.Lookups)), *client)
+	doRequest("gauge", "MCacheInuse", strconv.Itoa(int(m.MCacheInuse)), *client)
+	doRequest("gauge", "MCacheSys", strconv.Itoa(int(m.MCacheSys)), *client)
+	doRequest("gauge", "MSpanInuse", strconv.Itoa(int(m.MSpanInuse)), *client)
+	doRequest("gauge", "MSpanSys", strconv.Itoa(int(m.MSpanSys)), *client)
+	doRequest("gauge", "Mallocs", strconv.Itoa(int(m.Mallocs)), *client)
+	doRequest("gauge", "NextGC", strconv.Itoa(int(m.NextGC)), *client)
+	doRequest("gauge", "NumForcedGC", strconv.Itoa(int(m.NumForcedGC)), *client)
+	doRequest("gauge", "NumGC", strconv.Itoa(int(m.NumGC)), *client)
+	doRequest("gauge", "OtherSys", strconv.Itoa(int(m.OtherSys)), *client)
+	doRequest("gauge", "PauseTotalNs", strconv.Itoa(int(m.PauseTotalNs)), *client)
+	doRequest("gauge", "StackInuse", strconv.Itoa(int(m.StackInuse)), *client)
+	doRequest("gauge", "StackSys", strconv.Itoa(int(m.StackSys)), *client)
+	doRequest("gauge", "Sys", strconv.Itoa(int(m.Sys)), *client)
+	doRequest("gauge", "TotalAlloc", strconv.Itoa(int(m.TotalAlloc)), *client)
+	doRequest("counter", "PollCount", strconv.Itoa(int(m.PollCount)), *client)
+	doRequest("gauge", "RandomValue", strconv.Itoa(int(m.RandomValue)), *client)
 
 }
 
-func doRequest(metricType string, metricName string, metricValue string, client http.Client) error {
+func doRequest(metricType string, metricName string, metricValue string, client http.Client) {
 	request, err := http.NewRequest(http.MethodPost, "http://localhost:8080/update/counter/someMetric/527", nil)
 	if err != nil {
-		return err
+		panic(err)
+
+		return
 	}
 
 	request.SetPathValue("metricType", metricType)
 	request.SetPathValue("metricName", metricName)
 	request.SetPathValue("metricValue", metricValue)
 
-	resp, err := client.Do(request)
+	_, err = client.Do(request)
 	if err != nil {
-		return err
+		panic(err)
 	}
 
-	//b, _ := json.Marshal(m)
-	//fmt.Println(string(b))
-	fmt.Println(resp.Status)
-	return nil
 }
