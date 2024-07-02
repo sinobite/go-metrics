@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/go-resty/resty/v2"
 	"net/http"
 	"runtime"
 	"strconv"
@@ -9,6 +10,8 @@ import (
 )
 
 func main() {
+	client := resty.New()
+
 	go func() {
 		for {
 			monitoring()
@@ -18,7 +21,7 @@ func main() {
 	go func() {
 		for {
 			time.Sleep(10 * time.Second)
-			sendMetric(m)
+			sendMetric(m, client)
 		}
 	}()
 
@@ -78,59 +81,44 @@ func monitoring() {
 	//fmt.Println(string(b))
 }
 
-func sendMetric(m Monitor) {
-	client := &http.Client{}
+func sendMetric(m Monitor, client *resty.Client) {
 
 	fmt.Println("sendMetric")
 
-	doRequest("gauge", "Alloc", strconv.Itoa(int(m.Alloc)), *client)
-	doRequest("gauge", "BuckHashSys", strconv.Itoa(int(m.BuckHashSys)), *client)
-	doRequest("gauge", "Frees", strconv.Itoa(int(m.Frees)), *client)
-	doRequest("gauge", "GCCPUFraction", strconv.Itoa(int(m.GCCPUFraction)), *client)
-	doRequest("gauge", "GCSys", strconv.Itoa(int(m.GCSys)), *client)
-	doRequest("gauge", "HeapAlloc", strconv.Itoa(int(m.HeapAlloc)), *client)
-	doRequest("gauge", "HeapIdle", strconv.Itoa(int(m.HeapIdle)), *client)
-	doRequest("gauge", "HeapInuse", strconv.Itoa(int(m.HeapInuse)), *client)
-	doRequest("gauge", "HeapObjects", strconv.Itoa(int(m.HeapObjects)), *client)
-	doRequest("gauge", "HeapReleased", strconv.Itoa(int(m.HeapReleased)), *client)
-	doRequest("gauge", "HeapSys", strconv.Itoa(int(m.HeapSys)), *client)
-	doRequest("gauge", "LastGC", strconv.Itoa(int(m.LastGC)), *client)
-	doRequest("gauge", "Lookups", strconv.Itoa(int(m.Lookups)), *client)
-	doRequest("gauge", "MCacheInuse", strconv.Itoa(int(m.MCacheInuse)), *client)
-	doRequest("gauge", "MCacheSys", strconv.Itoa(int(m.MCacheSys)), *client)
-	doRequest("gauge", "MSpanInuse", strconv.Itoa(int(m.MSpanInuse)), *client)
-	doRequest("gauge", "MSpanSys", strconv.Itoa(int(m.MSpanSys)), *client)
-	doRequest("gauge", "Mallocs", strconv.Itoa(int(m.Mallocs)), *client)
-	doRequest("gauge", "NextGC", strconv.Itoa(int(m.NextGC)), *client)
-	doRequest("gauge", "NumForcedGC", strconv.Itoa(int(m.NumForcedGC)), *client)
-	doRequest("gauge", "NumGC", strconv.Itoa(int(m.NumGC)), *client)
-	doRequest("gauge", "OtherSys", strconv.Itoa(int(m.OtherSys)), *client)
-	doRequest("gauge", "PauseTotalNs", strconv.Itoa(int(m.PauseTotalNs)), *client)
-	doRequest("gauge", "StackInuse", strconv.Itoa(int(m.StackInuse)), *client)
-	doRequest("gauge", "StackSys", strconv.Itoa(int(m.StackSys)), *client)
-	doRequest("gauge", "Sys", strconv.Itoa(int(m.Sys)), *client)
-	doRequest("gauge", "TotalAlloc", strconv.Itoa(int(m.TotalAlloc)), *client)
-	doRequest("counter", "PollCount", strconv.Itoa(int(m.PollCount)), *client)
-	doRequest("gauge", "RandomValue", strconv.Itoa(int(m.RandomValue)), *client)
+	doRequest("gauge", "Alloc", strconv.Itoa(int(m.Alloc)), client)
+	doRequest("gauge", "BuckHashSys", strconv.Itoa(int(m.BuckHashSys)), client)
+	doRequest("gauge", "Frees", strconv.Itoa(int(m.Frees)), client)
+	doRequest("gauge", "GCCPUFraction", strconv.Itoa(int(m.GCCPUFraction)), client)
+	doRequest("gauge", "GCSys", strconv.Itoa(int(m.GCSys)), client)
+	doRequest("gauge", "HeapAlloc", strconv.Itoa(int(m.HeapAlloc)), client)
+	doRequest("gauge", "HeapIdle", strconv.Itoa(int(m.HeapIdle)), client)
+	doRequest("gauge", "HeapInuse", strconv.Itoa(int(m.HeapInuse)), client)
+	doRequest("gauge", "HeapObjects", strconv.Itoa(int(m.HeapObjects)), client)
+	doRequest("gauge", "HeapReleased", strconv.Itoa(int(m.HeapReleased)), client)
+	doRequest("gauge", "HeapSys", strconv.Itoa(int(m.HeapSys)), client)
+	doRequest("gauge", "LastGC", strconv.Itoa(int(m.LastGC)), client)
+	doRequest("gauge", "Lookups", strconv.Itoa(int(m.Lookups)), client)
+	doRequest("gauge", "MCacheInuse", strconv.Itoa(int(m.MCacheInuse)), client)
+	doRequest("gauge", "MCacheSys", strconv.Itoa(int(m.MCacheSys)), client)
+	doRequest("gauge", "MSpanInuse", strconv.Itoa(int(m.MSpanInuse)), client)
+	doRequest("gauge", "MSpanSys", strconv.Itoa(int(m.MSpanSys)), client)
+	doRequest("gauge", "Mallocs", strconv.Itoa(int(m.Mallocs)), client)
+	doRequest("gauge", "NextGC", strconv.Itoa(int(m.NextGC)), client)
+	doRequest("gauge", "NumForcedGC", strconv.Itoa(int(m.NumForcedGC)), client)
+	doRequest("gauge", "NumGC", strconv.Itoa(int(m.NumGC)), client)
+	doRequest("gauge", "OtherSys", strconv.Itoa(int(m.OtherSys)), client)
+	doRequest("gauge", "PauseTotalNs", strconv.Itoa(int(m.PauseTotalNs)), client)
+	doRequest("gauge", "StackInuse", strconv.Itoa(int(m.StackInuse)), client)
+	doRequest("gauge", "StackSys", strconv.Itoa(int(m.StackSys)), client)
+	doRequest("gauge", "Sys", strconv.Itoa(int(m.Sys)), client)
+	doRequest("gauge", "TotalAlloc", strconv.Itoa(int(m.TotalAlloc)), client)
+	doRequest("counter", "PollCount", strconv.Itoa(int(m.PollCount)), client)
+	doRequest("gauge", "RandomValue", strconv.Itoa(int(m.RandomValue)), client)
 
 }
 
-func doRequest(metricType string, metricName string, metricValue string, client http.Client) {
-	request, err := http.NewRequest(http.MethodPost, "http://localhost:8080/update/counter/someMetric/527", nil)
-	if err != nil {
-		panic(err)
-	}
-
-	request.SetPathValue("metricType", metricType)
-	request.SetPathValue("metricName", metricName)
-	request.SetPathValue("metricValue", metricValue)
-
-	resp, err := client.Do(request)
-	if err != nil {
-		panic(err)
-	}
-
-	err = resp.Body.Close()
+func doRequest(metricType string, metricName string, metricValue string, client *resty.Client) {
+	_, err := client.R().Post(fmt.Sprintf("http://localhost:8087/update/%s/%s/%s", metricType, metricName, metricValue))
 	if err != nil {
 		panic(err)
 	}

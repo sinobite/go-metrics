@@ -9,9 +9,11 @@ import (
 func main() {
 	router := chi.NewRouter()
 
+	router.Get("/", handlers.AllMetricsHandler)
 	router.Post("/update/{metricType}/{metricName}/{metricValue}", handlers.UpdateMetricHandler)
+	router.Get("/value/{metricType}/{metricName}", handlers.MetricHandler)
 
-	err := http.ListenAndServe("localhost:8080", router)
+	err := http.ListenAndServe("localhost:8087", router)
 	if err != nil {
 		panic(err)
 	}
