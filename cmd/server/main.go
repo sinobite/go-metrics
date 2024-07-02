@@ -13,7 +13,7 @@ func main() {
 	router.Post("/update/{metricType}/{metricName}/{metricValue}", handlers.UpdateMetricHandler)
 	router.Get("/value/{metricType}/{metricName}", handlers.MetricHandler)
 
-	err := http.ListenAndServe("localhost:8087", router)
+	err := http.ListenAndServe("localhost:8080", router)
 	if err != nil {
 		panic(err)
 	}

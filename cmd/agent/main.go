@@ -118,7 +118,7 @@ func sendMetric(m Monitor, client *resty.Client) {
 }
 
 func doRequest(metricType string, metricName string, metricValue string, client *resty.Client) {
-	_, err := client.R().Post(fmt.Sprintf("http://localhost:8087/update/%s/%s/%s", metricType, metricName, metricValue))
+	_, err := client.R().Post(fmt.Sprintf("http://localhost:8080/update/%s/%s/%s", metricType, metricName, metricValue))
 	if err != nil {
 		panic(err)
 	}
