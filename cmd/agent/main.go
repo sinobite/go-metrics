@@ -9,13 +9,6 @@ import (
 )
 
 func main() {
-	//select {
-	//case <-time.After(2 * time.Second):
-	//	go monitoring()
-	//case <-time.After(10 * time.Second):
-	//	go sendMetric(m)
-	//}
-
 	go func() {
 		for {
 			monitoring()
