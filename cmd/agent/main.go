@@ -18,12 +18,12 @@ func main() {
 	go func() {
 		for {
 			monitoring()
-			time.Sleep(time.Duration(pollInterval) * time.Second)
+			time.Sleep(pollInterval)
 		}
 	}()
 	go func() {
 		for {
-			time.Sleep(time.Duration(reportInterval) * time.Second)
+			time.Sleep(reportInterval)
 			sendMetric(m, client)
 		}
 	}()
