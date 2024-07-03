@@ -6,14 +6,19 @@ import (
 	"net/http"
 )
 
-func main() {
+func NewRouter() chi.Router {
 	router := chi.NewRouter()
 
 	router.Get("/", handlers.AllMetricsHandler)
 	router.Post("/update/{metricType}/{metricName}/{metricValue}", handlers.UpdateMetricHandler)
 	router.Get("/value/{metricType}/{metricName}", handlers.MetricHandler)
 
-	err := http.ListenAndServe("localhost:8080", router)
+	return router
+}
+
+func main() {
+
+	err := http.ListenAndServe("localhost:8080", NewRouter())
 	if err != nil {
 		panic(err)
 	}
