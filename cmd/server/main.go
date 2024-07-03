@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"github.com/go-chi/chi/v5"
 	"github.com/sinobite/go-metrics/internal/handlers"
 	"net/http"
@@ -23,4 +24,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+var flagRunEndpoint string = "localhost:8080"
+
+func parseFlags() {
+	flag.StringVar(&flagRunEndpoint, "a", "localhost:8080", "address and port to run server")
+	flag.Parse()
 }
