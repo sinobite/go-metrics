@@ -17,8 +17,9 @@ func NewRouter() chi.Router {
 }
 
 func main() {
+	parseFlags()
 
-	err := http.ListenAndServe("localhost:8080", NewRouter())
+	err := http.ListenAndServe(flagRunEndpoint, NewRouter())
 	if err != nil {
 		panic(err)
 	}

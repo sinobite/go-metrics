@@ -10,22 +10,24 @@ import (
 )
 
 func main() {
+	parseFlags()
+
 	client := resty.New()
 
 	go func() {
 		for {
 			monitoring()
-			time.Sleep(2 * time.Second)
+			time.Sleep(time.Duration(pollInterval) * time.Second)
 		}
 	}()
 	go func() {
 		for {
-			time.Sleep(10 * time.Second)
+			time.Sleep(time.Duration(reportInterval) * time.Second)
 			sendMetric(m, client)
 		}
 	}()
 
-	err := http.ListenAndServe("localhost:8088", nil)
+	err := http.ListenAndServe(flagRunEndpoint, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -76,9 +78,6 @@ func monitoring() {
 	m.PollCount = m.PollCount + 1
 	m.RandomValue = m.RandomValue + 1
 
-	// Just encode to json and print
-	//b, _ := json.Marshal(m)
-	//fmt.Println(string(b))
 }
 
 func sendMetric(m Monitor, client *resty.Client) {
