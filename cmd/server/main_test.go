@@ -33,11 +33,13 @@ func TestRouter(t *testing.T) {
 		status int
 		method string
 	}{
+		{"/update/gauge/testGaugeMetricName/328479.927", "", http.StatusOK, "POST"},
+		{"/value/gauge/testGaugeMetricName", "328479.927", http.StatusOK, "GET"},
 		{"/update/counter/testMetricName/123", "", http.StatusOK, "POST"},
 		{"/update/wrongType/testMetricName/123", "", http.StatusBadRequest, "POST"},
 		{"/value/counter/testMetricName", "123", http.StatusOK, "GET"},
 		{"/value/counter/wrongTestMetricName", "", http.StatusNotFound, "GET"},
-		{"/", "testMetricName: 123 \n", http.StatusOK, "GET"},
+		{"/", "testGaugeMetricName: 328479.927 \ntestMetricName: 123 \n", http.StatusOK, "GET"},
 	}
 	for _, v := range testTable {
 		resp, get := testRequest(t, ts, v.method, v.url)
