@@ -83,38 +83,45 @@ func monitoring() {
 
 func sendMetric(m Monitor, client *resty.Client) {
 
-	fmt.Println("sendMetric")
+	var metricsTable = []struct {
+		metricType  string
+		metricName  string
+		metricValue string
+	}{
+		{"gauge", "Alloc", strconv.Itoa(int(m.Alloc))},
+		{"gauge", "BuckHashSys", strconv.Itoa(int(m.BuckHashSys))},
+		{"gauge", "Frees", strconv.Itoa(int(m.Frees))},
+		{"gauge", "GCCPUFraction", strconv.Itoa(int(m.GCCPUFraction))},
+		{"gauge", "GCSys", strconv.Itoa(int(m.GCSys))},
+		{"gauge", "HeapAlloc", strconv.Itoa(int(m.HeapAlloc))},
+		{"gauge", "HeapIdle", strconv.Itoa(int(m.HeapIdle))},
+		{"gauge", "HeapInuse", strconv.Itoa(int(m.HeapInuse))},
+		{"gauge", "HeapObjects", strconv.Itoa(int(m.HeapObjects))},
+		{"gauge", "HeapReleased", strconv.Itoa(int(m.HeapReleased))},
+		{"gauge", "HeapSys", strconv.Itoa(int(m.HeapSys))},
+		{"gauge", "LastGC", strconv.Itoa(int(m.LastGC))},
+		{"gauge", "Lookups", strconv.Itoa(int(m.Lookups))},
+		{"gauge", "MCacheInuse", strconv.Itoa(int(m.MCacheInuse))},
+		{"gauge", "MCacheSys", strconv.Itoa(int(m.MCacheSys))},
+		{"gauge", "MSpanInuse", strconv.Itoa(int(m.MSpanInuse))},
+		{"gauge", "MSpanSys", strconv.Itoa(int(m.MSpanSys))},
+		{"gauge", "Mallocs", strconv.Itoa(int(m.Mallocs))},
+		{"gauge", "NextGC", strconv.Itoa(int(m.NextGC))},
+		{"gauge", "NumForcedGC", strconv.Itoa(int(m.NumForcedGC))},
+		{"gauge", "NumGC", strconv.Itoa(int(m.NumGC))},
+		{"gauge", "OtherSys", strconv.Itoa(int(m.OtherSys))},
+		{"gauge", "PauseTotalNs", strconv.Itoa(int(m.PauseTotalNs))},
+		{"gauge", "StackInuse", strconv.Itoa(int(m.StackInuse))},
+		{"gauge", "StackSys", strconv.Itoa(int(m.StackSys))},
+		{"gauge", "Sys", strconv.Itoa(int(m.Sys))},
+		{"gauge", "TotalAlloc", strconv.Itoa(int(m.TotalAlloc))},
+		{"counter", "PollCount", strconv.Itoa(int(m.PollCount))},
+		{"gauge", "RandomValue", strconv.Itoa(int(m.RandomValue))},
+	}
 
-	doRequest("gauge", "Alloc", strconv.Itoa(int(m.Alloc)), client)
-	doRequest("gauge", "BuckHashSys", strconv.Itoa(int(m.BuckHashSys)), client)
-	doRequest("gauge", "Frees", strconv.Itoa(int(m.Frees)), client)
-	doRequest("gauge", "GCCPUFraction", strconv.Itoa(int(m.GCCPUFraction)), client)
-	doRequest("gauge", "GCSys", strconv.Itoa(int(m.GCSys)), client)
-	doRequest("gauge", "HeapAlloc", strconv.Itoa(int(m.HeapAlloc)), client)
-	doRequest("gauge", "HeapIdle", strconv.Itoa(int(m.HeapIdle)), client)
-	doRequest("gauge", "HeapInuse", strconv.Itoa(int(m.HeapInuse)), client)
-	doRequest("gauge", "HeapObjects", strconv.Itoa(int(m.HeapObjects)), client)
-	doRequest("gauge", "HeapReleased", strconv.Itoa(int(m.HeapReleased)), client)
-	doRequest("gauge", "HeapSys", strconv.Itoa(int(m.HeapSys)), client)
-	doRequest("gauge", "LastGC", strconv.Itoa(int(m.LastGC)), client)
-	doRequest("gauge", "Lookups", strconv.Itoa(int(m.Lookups)), client)
-	doRequest("gauge", "MCacheInuse", strconv.Itoa(int(m.MCacheInuse)), client)
-	doRequest("gauge", "MCacheSys", strconv.Itoa(int(m.MCacheSys)), client)
-	doRequest("gauge", "MSpanInuse", strconv.Itoa(int(m.MSpanInuse)), client)
-	doRequest("gauge", "MSpanSys", strconv.Itoa(int(m.MSpanSys)), client)
-	doRequest("gauge", "Mallocs", strconv.Itoa(int(m.Mallocs)), client)
-	doRequest("gauge", "NextGC", strconv.Itoa(int(m.NextGC)), client)
-	doRequest("gauge", "NumForcedGC", strconv.Itoa(int(m.NumForcedGC)), client)
-	doRequest("gauge", "NumGC", strconv.Itoa(int(m.NumGC)), client)
-	doRequest("gauge", "OtherSys", strconv.Itoa(int(m.OtherSys)), client)
-	doRequest("gauge", "PauseTotalNs", strconv.Itoa(int(m.PauseTotalNs)), client)
-	doRequest("gauge", "StackInuse", strconv.Itoa(int(m.StackInuse)), client)
-	doRequest("gauge", "StackSys", strconv.Itoa(int(m.StackSys)), client)
-	doRequest("gauge", "Sys", strconv.Itoa(int(m.Sys)), client)
-	doRequest("gauge", "TotalAlloc", strconv.Itoa(int(m.TotalAlloc)), client)
-	doRequest("counter", "PollCount", strconv.Itoa(int(m.PollCount)), client)
-	doRequest("gauge", "RandomValue", strconv.Itoa(int(m.RandomValue)), client)
-
+	for _, m := range metricsTable {
+		doRequest(m.metricType, m.metricName, m.metricValue, client)
+	}
 }
 
 func doRequest(metricType string, metricName string, metricValue string, client *resty.Client) {
