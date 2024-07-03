@@ -28,7 +28,7 @@ func main() {
 		}
 	}()
 
-	err := http.ListenAndServe(flagRunEndpoint, nil)
+	err := http.ListenAndServe("localhost:8088", nil)
 	if err != nil {
 		panic(err)
 	}
