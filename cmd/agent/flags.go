@@ -2,9 +2,9 @@ package main
 
 import "flag"
 
-var flagRunEndpoint string
-var reportInterval int64
-var pollInterval int64
+var flagRunEndpoint string = "localhost:8080"
+var reportInterval int64 = 10
+var pollInterval int64 = 2
 
 func parseFlags() {
 	flag.StringVar(&flagRunEndpoint, "a", "localhost:8080", "address and port to run server")
