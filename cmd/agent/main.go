@@ -18,12 +18,12 @@ func main() {
 	go func() {
 		for {
 			monitoring()
-			time.Sleep(pollInterval)
+			time.Sleep(time.Duration(pollInterval) * time.Second)
 		}
 	}()
 	go func() {
 		for {
-			time.Sleep(reportInterval)
+			time.Sleep(time.Duration(reportInterval) * time.Second)
 			sendMetric(m, client)
 		}
 	}()
@@ -35,13 +35,13 @@ func main() {
 }
 
 var flagRunEndpoint string = "localhost:8080"
-var reportInterval time.Duration = 10
-var pollInterval time.Duration = 2
+var reportInterval int = 10
+var pollInterval int = 2
 
 func parseFlags() {
 	flag.StringVar(&flagRunEndpoint, "a", "localhost:8080", "address and port to run server")
-	flag.DurationVar(&reportInterval, "r", time.Duration(10*time.Second), "report Interval for metrics")
-	flag.DurationVar(&pollInterval, "p", time.Duration(2*time.Second), "pool Interval for metrics")
+	flag.IntVar(&reportInterval, "r", 10, "report Interval for metrics")
+	flag.IntVar(&pollInterval, "p", 2, "pool Interval for metrics")
 
 	flag.Parse()
 }
