@@ -28,7 +28,7 @@ func main() {
 		}
 	}()
 
-	err := http.ListenAndServe("localhost:8088", nil)
+	err := http.ListenAndServe("localhost:8089", nil)
 	if err != nil {
 		panic(err)
 	}
@@ -55,6 +55,8 @@ type Monitor struct {
 var m Monitor
 
 func monitoring() {
+	fmt.Println("monitoring")
+
 	var rtm runtime.MemStats
 
 	// Read full mem stats
@@ -94,6 +96,7 @@ func monitoring() {
 }
 
 func sendMetric(m Monitor, client *resty.Client) {
+	fmt.Println("sendMetric")
 
 	var metricsTable = []struct {
 		metricType  string
@@ -137,8 +140,9 @@ func sendMetric(m Monitor, client *resty.Client) {
 }
 
 func doRequest(metricType string, metricName string, metricValue string, client *resty.Client) {
-	_, err := client.R().Post(fmt.Sprintf("http://%s/update/%s/%s/%s", flagRunEndpoint, metricType, metricName, metricValue))
+
+	_, err := client.R().SetHeader("Content-Type", "text/plain").Post(fmt.Sprintf("http://%s/update/%s/%s/%s", flagRunEndpoint, metricType, metricName, metricValue))
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 }
