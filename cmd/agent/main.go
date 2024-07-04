@@ -3,7 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/caarlos0/env"
 	"github.com/go-resty/resty/v2"
+	"log"
 	"net/http"
 	"runtime"
 	"strconv"
@@ -18,12 +20,12 @@ func main() {
 	go func() {
 		for {
 			monitoring()
-			time.Sleep(time.Duration(pollInterval) * time.Second)
+			time.Sleep(time.Duration(cfg.PollInterval) * time.Second)
 		}
 	}()
 	go func() {
 		for {
-			time.Sleep(time.Duration(reportInterval) * time.Second)
+			time.Sleep(time.Duration(cfg.ReportInterval) * time.Second)
 			sendMetric(m, client)
 		}
 	}()
@@ -34,16 +36,24 @@ func main() {
 	}
 }
 
-var flagRunEndpoint string = "localhost:8080"
-var reportInterval int = 10
-var pollInterval int = 2
+type EnvConfig struct {
+	FlagRunEndpoint string `env:"ADDRESS"`
+	ReportInterval  int    `env:"REPORT_INTERVAL"`
+	PollInterval    int    `env:"POLL_INTERVAL"`
+}
+
+var cfg EnvConfig
 
 func parseFlags() {
-	flag.StringVar(&flagRunEndpoint, "a", "localhost:8080", "address and port to run server")
-	flag.IntVar(&reportInterval, "r", 10, "report Interval for metrics")
-	flag.IntVar(&pollInterval, "p", 2, "pool Interval for metrics")
-
+	flag.StringVar(&cfg.FlagRunEndpoint, "a", "localhost:8080", "address and port to run server")
+	flag.IntVar(&cfg.ReportInterval, "r", 10, "report Interval for metrics")
+	flag.IntVar(&cfg.PollInterval, "p", 2, "pool Interval for metrics")
 	flag.Parse()
+
+	err := env.Parse(&cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 type Monitor struct {
@@ -55,8 +65,6 @@ type Monitor struct {
 var m Monitor
 
 func monitoring() {
-	fmt.Println("monitoring")
-
 	var rtm runtime.MemStats
 
 	// Read full mem stats
@@ -96,8 +104,6 @@ func monitoring() {
 }
 
 func sendMetric(m Monitor, client *resty.Client) {
-	fmt.Println("sendMetric")
-
 	var metricsTable = []struct {
 		metricType  string
 		metricName  string
@@ -141,7 +147,7 @@ func sendMetric(m Monitor, client *resty.Client) {
 
 func doRequest(metricType string, metricName string, metricValue string, client *resty.Client) {
 
-	_, err := client.R().SetHeader("Content-Type", "text/plain").Post(fmt.Sprintf("http://%s/update/%s/%s/%s", flagRunEndpoint, metricType, metricName, metricValue))
+	_, err := client.R().SetHeader("Content-Type", "text/plain").Post(fmt.Sprintf("http://%s/update/%s/%s/%s", cfg.FlagRunEndpoint, metricType, metricName, metricValue))
 	if err != nil {
 		fmt.Println(err)
 	}

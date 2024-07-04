@@ -5,6 +5,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/sinobite/go-metrics/internal/handlers"
 	"net/http"
+	"os"
 )
 
 func NewRouter() chi.Router {
@@ -31,4 +32,8 @@ var flagRunEndpoint string = "localhost:8080"
 func parseFlags() {
 	flag.StringVar(&flagRunEndpoint, "a", "localhost:8080", "address and port to run server")
 	flag.Parse()
+
+	if envRunAddr := os.Getenv("ADDRESS"); envRunAddr != "" {
+		flagRunEndpoint = envRunAddr
+	}
 }
