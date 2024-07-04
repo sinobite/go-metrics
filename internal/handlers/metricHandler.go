@@ -14,7 +14,7 @@ func MetricHandler(writer http.ResponseWriter, request *http.Request) {
 	case "gauge":
 		value, ok := storage.Storage.Gauges[metricName]
 		if ok {
-			_, err := writer.Write([]byte(strconv.FormatFloat(value, 'f', 3, 64)))
+			_, err := writer.Write([]byte(strconv.FormatFloat(value, 'f', -1, 64)))
 			if err != nil {
 				panic(err)
 			}
