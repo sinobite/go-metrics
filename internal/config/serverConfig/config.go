@@ -17,7 +17,7 @@ func New() EnvConfig {
 	return cfg
 }
 
-func (c EnvConfig) parseFlags() {
+func (c *EnvConfig) parseFlags() {
 	flag.StringVar(&c.FlagRunEndpoint, "a", "localhost:8080", "address and port to run server")
 	flag.Parse()
 

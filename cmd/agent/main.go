@@ -10,13 +10,14 @@ import (
 func main() {
 	cfg := agentConfig.New()
 	cfg.Parse()
+
 	ms := metricsService.New(cfg)
 
 	client := resty.New()
 
 	ms.StartMonitoring(client)
 
-	err := http.ListenAndServe(cfg.FlagRunEndpoint, nil)
+	err := http.ListenAndServe("localhost:8089", nil)
 	if err != nil {
 		panic(err)
 	}

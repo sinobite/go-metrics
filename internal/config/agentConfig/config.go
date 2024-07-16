@@ -14,7 +14,7 @@ type EnvConfig struct {
 
 func New() EnvConfig {
 	cfg := EnvConfig{
-		FlagRunEndpoint: "localhost:8089",
+		FlagRunEndpoint: "localhost:8080",
 		ReportInterval:  10,
 		PollInterval:    2,
 	}
@@ -22,20 +22,20 @@ func New() EnvConfig {
 	return cfg
 }
 
-func (c EnvConfig) Parse() {
+func (c *EnvConfig) Parse() {
 	c.parseEnvs()
 	c.parseFlags()
 }
 
-func (c EnvConfig) parseEnvs() {
-	err := env.Parse(&c)
+func (c *EnvConfig) parseEnvs() {
+	err := env.Parse(c)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func (c EnvConfig) parseFlags() {
-	flag.StringVar(&c.FlagRunEndpoint, "a", "localhost:8089", "address and port to run server")
+func (c *EnvConfig) parseFlags() {
+	flag.StringVar(&c.FlagRunEndpoint, "a", "localhost:8080", "address and port to run server")
 	flag.IntVar(&c.ReportInterval, "r", 10, "report Interval for metrics")
 	flag.IntVar(&c.PollInterval, "p", 2, "pool Interval for metrics")
 	flag.Parse()

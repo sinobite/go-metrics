@@ -25,7 +25,7 @@ func New(cfg agentConfig.EnvConfig) Monitor {
 	}
 }
 
-func (m Monitor) Monitoring() {
+func (m *Monitor) Monitoring() {
 	var rtm runtime.MemStats
 
 	// Read full mem stats
@@ -63,7 +63,7 @@ func (m Monitor) Monitoring() {
 	m.RandomValue = m.RandomValue + 1
 }
 
-func (m Monitor) SendMetric(client *resty.Client) {
+func (m *Monitor) SendMetric(client *resty.Client) {
 	var metricsTable = []struct {
 		metricType  string
 		metricName  string
@@ -105,15 +105,14 @@ func (m Monitor) SendMetric(client *resty.Client) {
 	}
 }
 
-func (m Monitor) doRequest(metricType string, metricName string, metricValue string, client *resty.Client) {
-
+func (m *Monitor) doRequest(metricType string, metricName string, metricValue string, client *resty.Client) {
 	_, err := client.R().SetHeader("Content-Type", "text/plain").Post(fmt.Sprintf("http://%s/update/%s/%s/%s", m.cfg.FlagRunEndpoint, metricType, metricName, metricValue))
 	if err != nil {
 		fmt.Println(err)
 	}
 }
 
-func (m Monitor) StartMonitoring(client *resty.Client) {
+func (m *Monitor) StartMonitoring(client *resty.Client) {
 	go func() {
 		for {
 			m.Monitoring()

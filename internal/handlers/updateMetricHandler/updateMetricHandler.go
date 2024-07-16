@@ -9,6 +9,7 @@ import (
 
 func New(storage storage.Storage) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
+
 		metricType := chi.URLParam(request, "metricType")
 		metricName := chi.URLParam(request, "metricName")
 		metricValue := chi.URLParam(request, "metricValue")
