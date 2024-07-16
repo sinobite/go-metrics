@@ -6,6 +6,7 @@ import (
 	"github.com/sinobite/go-metrics/internal/config/agentConfig"
 	"runtime"
 	"strconv"
+	"time"
 )
 
 type Monitor struct {
@@ -110,4 +111,19 @@ func (m Monitor) doRequest(metricType string, metricName string, metricValue str
 	if err != nil {
 		fmt.Println(err)
 	}
+}
+
+func (m Monitor) StartMonitoring(client *resty.Client) {
+	go func() {
+		for {
+			m.Monitoring()
+			time.Sleep(time.Duration(m.cfg.PollInterval) * time.Second)
+		}
+	}()
+	go func() {
+		for {
+			time.Sleep(time.Duration(m.cfg.ReportInterval) * time.Second)
+			m.SendMetric(client)
+		}
+	}()
 }
