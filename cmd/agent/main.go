@@ -5,29 +5,18 @@ import (
 	"github.com/sinobite/go-metrics/internal/config/agentConfig"
 	"github.com/sinobite/go-metrics/internal/services/metricsService"
 	"net/http"
-	"time"
 )
 
 func main() {
 	cfg := agentConfig.New()
+	cfg.Parse()
 	ms := metricsService.New(cfg)
 
 	client := resty.New()
 
-	go func() {
-		for {
-			ms.Monitoring()
-			time.Sleep(time.Duration(cfg.PollInterval) * time.Second)
-		}
-	}()
-	go func() {
-		for {
-			time.Sleep(time.Duration(cfg.ReportInterval) * time.Second)
-			ms.SendMetric(client)
-		}
-	}()
+	ms.StartMonitoring(client)
 
-	err := http.ListenAndServe("localhost:8089", nil)
+	err := http.ListenAndServe(cfg.FlagRunEndpoint, nil)
 	if err != nil {
 		panic(err)
 	}
