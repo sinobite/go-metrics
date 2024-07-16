@@ -1,14 +1,13 @@
 package main
 
 import (
-	"flag"
 	"github.com/go-chi/chi/v5"
+	"github.com/sinobite/go-metrics/internal/config/serverConfig"
 	"github.com/sinobite/go-metrics/internal/handlers/allMetrcisHandler"
 	"github.com/sinobite/go-metrics/internal/handlers/metricHandler"
 	"github.com/sinobite/go-metrics/internal/handlers/updateMetricHandler"
 	"github.com/sinobite/go-metrics/internal/storage"
 	"net/http"
-	"os"
 )
 
 func NewRouter(storage storage.Storage) chi.Router {
@@ -22,23 +21,12 @@ func NewRouter(storage storage.Storage) chi.Router {
 }
 
 func main() {
-	parseFlags()
+	cfg := serverConfig.New()
 
 	s := storage.New()
 
-	err := http.ListenAndServe(flagRunEndpoint, NewRouter(s))
+	err := http.ListenAndServe(cfg.FlagRunEndpoint, NewRouter(s))
 	if err != nil {
 		panic(err)
-	}
-}
-
-var flagRunEndpoint string = "localhost:8080"
-
-func parseFlags() {
-	flag.StringVar(&flagRunEndpoint, "a", "localhost:8080", "address and port to run server")
-	flag.Parse()
-
-	if envRunAddr := os.Getenv("ADDRESS"); envRunAddr != "" {
-		flagRunEndpoint = envRunAddr
 	}
 }
