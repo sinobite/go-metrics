@@ -27,6 +27,6 @@ func (c *EnvConfig) parseEnvs() {
 }
 
 func (c *EnvConfig) parseFlags() {
-	flag.StringVar(&c.FlagRunEndpoint, "a", "localhost:8080", "address and port to run server")
+	flag.StringVar(&c.FlagRunEndpoint, "a", c.FlagRunEndpoint, "address and port to run server")
 	flag.Parse()
 }

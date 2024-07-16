@@ -35,9 +35,9 @@ func (c *EnvConfig) parseEnvs() {
 }
 
 func (c *EnvConfig) parseFlags() {
-	flag.StringVar(&c.FlagRunEndpoint, "a", "localhost:8080", "address and port to run server")
-	flag.IntVar(&c.ReportInterval, "r", 10, "report Interval for metrics")
-	flag.IntVar(&c.PollInterval, "p", 2, "pool Interval for metrics")
+	flag.StringVar(&c.FlagRunEndpoint, "a", c.FlagRunEndpoint, "address and port to run server")
+	flag.IntVar(&c.ReportInterval, "r", c.ReportInterval, "report Interval for metrics")
+	flag.IntVar(&c.PollInterval, "p", c.PollInterval, "pool Interval for metrics")
 	flag.Parse()
 
 }
