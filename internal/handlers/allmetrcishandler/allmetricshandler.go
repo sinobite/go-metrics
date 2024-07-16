@@ -16,7 +16,7 @@ func New(storage storage.Storage) http.HandlerFunc {
 			log.Printf("Failed to find all metrics: %v", err)
 		}
 
-		writer.Header().Set("Content-Type", "text/html")
+		writer.Header().Set("Content-Type", "text/plain")
 		_, err = io.WriteString(writer, strings.Join(metricsSlice, ""))
 		if err != nil {
 			http.Error(writer, "Failed to find all metrics", http.StatusInternalServerError)

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/go-resty/resty/v2"
 	"github.com/sinobite/go-metrics/internal/config/agentconfig"
+	"log"
 	"runtime"
 	"strconv"
 	"sync"
@@ -103,15 +104,19 @@ func (m *Monitor) SendMetric(client *resty.Client) {
 	}
 
 	for _, mt := range metricsTable {
-		m.doRequest(mt.metricType, mt.metricName, mt.metricValue, client)
+		err := m.doRequest(mt.metricType, mt.metricName, mt.metricValue, client)
+		if err != nil {
+			log.Fatalf("Failed to do request: %s", err)
+		}
 	}
 }
 
-func (m *Monitor) doRequest(metricType string, metricName string, metricValue string, client *resty.Client) {
+func (m *Monitor) doRequest(metricType string, metricName string, metricValue string, client *resty.Client) error {
 	_, err := client.R().SetHeader("Content-Type", "text/plain").Post(fmt.Sprintf("http://%s/update/%s/%s/%s", m.cfg.FlagRunEndpoint, metricType, metricName, metricValue))
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
+	return nil
 }
 
 func (m *Monitor) StartMonitoring(ctx context.Context, client *resty.Client) {
