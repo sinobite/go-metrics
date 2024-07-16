@@ -1,4 +1,4 @@
-package updateMetricHandler
+package update_metric_handler
 
 import (
 	"github.com/go-chi/chi/v5"

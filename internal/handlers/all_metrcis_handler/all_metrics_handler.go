@@ -1,4 +1,4 @@
-package allMetrcisHandler
+package all_metrcis_handler
 
 import (
 	"github.com/sinobite/go-metrics/internal/storage"

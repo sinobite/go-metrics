@@ -1,15 +1,15 @@
-package metricsService
+package metrics_service
 
 import (
 	"github.com/go-resty/resty/v2"
-	"github.com/sinobite/go-metrics/internal/config/agentConfig"
+	"github.com/sinobite/go-metrics/internal/config/agent_config"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
 )
 
 func TestMonitoring(t *testing.T) {
-	cfg := agentConfig.New()
+	cfg := agent_config.New()
 	ms := New(cfg)
 
 	t.Run("Empty monitoring state", func(t *testing.T) {
@@ -24,7 +24,7 @@ func TestMonitoring(t *testing.T) {
 }
 
 func TestStartMonitoring(t *testing.T) {
-	cfg := agentConfig.New()
+	cfg := agent_config.New()
 	ms := New(cfg)
 	client := resty.New()
 

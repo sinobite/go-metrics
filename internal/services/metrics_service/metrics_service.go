@@ -1,9 +1,9 @@
-package metricsService
+package metrics_service
 
 import (
 	"fmt"
 	"github.com/go-resty/resty/v2"
-	"github.com/sinobite/go-metrics/internal/config/agentConfig"
+	"github.com/sinobite/go-metrics/internal/config/agent_config"
 	"runtime"
 	"strconv"
 	"time"
@@ -13,10 +13,10 @@ type Monitor struct {
 	runtime.MemStats
 	PollCount   int64
 	RandomValue float64
-	cfg         agentConfig.EnvConfig
+	cfg         agent_config.EnvConfig
 }
 
-func New(cfg agentConfig.EnvConfig) Monitor {
+func New(cfg agent_config.EnvConfig) Monitor {
 	return Monitor{
 		MemStats:    runtime.MemStats{},
 		PollCount:   0,

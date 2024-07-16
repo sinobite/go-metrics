@@ -2,16 +2,16 @@ package main
 
 import (
 	"github.com/go-resty/resty/v2"
-	"github.com/sinobite/go-metrics/internal/config/agentConfig"
-	"github.com/sinobite/go-metrics/internal/services/metricsService"
+	"github.com/sinobite/go-metrics/internal/config/agent_config"
+	"github.com/sinobite/go-metrics/internal/services/metrics_service"
 	"net/http"
 )
 
 func main() {
-	cfg := agentConfig.New()
+	cfg := agent_config.New()
 	cfg.Parse()
 
-	ms := metricsService.New(cfg)
+	ms := metrics_service.New(cfg)
 
 	client := resty.New()
 

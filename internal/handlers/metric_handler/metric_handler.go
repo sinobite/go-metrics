@@ -1,4 +1,4 @@
-package metricHandler
+package metric_handler
 
 import (
 	"github.com/go-chi/chi/v5"
