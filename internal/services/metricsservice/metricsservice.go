@@ -122,8 +122,8 @@ func (m *Monitor) doRequest(metricType string, metricName string, metricValue st
 func (m *Monitor) StartMonitoring(ctx context.Context, client *resty.Client) {
 	var wg sync.WaitGroup
 
-	pollTimer := time.NewTimer(time.Duration(m.cfg.PollInterval))
-	reportTimer := time.NewTimer(time.Duration(m.cfg.ReportInterval))
+	pollTimer := time.NewTimer(time.Duration(m.cfg.PollInterval) * time.Second)
+	reportTimer := time.NewTimer(time.Duration(m.cfg.ReportInterval) * time.Second)
 	defer func() {
 		pollTimer.Stop()
 		reportTimer.Stop()
