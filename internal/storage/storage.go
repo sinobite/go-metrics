@@ -1,11 +1,21 @@
 package storage
 
-type MemStorage struct {
-	Gauges   map[string]float64
-	Counters map[string]int64
+type Impl struct {
+	storage MemStorage
 }
 
-var Storage MemStorage = MemStorage{
-	Gauges:   make(map[string]float64),
-	Counters: make(map[string]int64),
+type Storage interface {
+	UpdateGaugeMetric(metricName string, metricValue string) error
+	UpdateCounterMetric(metricName string, metricValue string) error
+	FindGaugeMetric(metricName string) (string, error)
+	FindCounterMetric(metricName string) (string, error)
+	FindAllMetrics() ([]string, error)
+}
+
+func New() Impl {
+	return Impl{
+		storage: MemStorage{
+			Gauges:   make(map[string]float64),
+			Counters: make(map[string]int64),
+		}}
 }

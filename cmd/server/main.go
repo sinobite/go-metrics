@@ -3,17 +3,20 @@ package main
 import (
 	"flag"
 	"github.com/go-chi/chi/v5"
-	"github.com/sinobite/go-metrics/internal/handlers"
+	"github.com/sinobite/go-metrics/internal/handlers/allMetrcisHandler"
+	"github.com/sinobite/go-metrics/internal/handlers/metricHandler"
+	"github.com/sinobite/go-metrics/internal/handlers/updateMetricHandler"
+	"github.com/sinobite/go-metrics/internal/storage"
 	"net/http"
 	"os"
 )
 
-func NewRouter() chi.Router {
+func NewRouter(storage storage.Storage) chi.Router {
 	router := chi.NewRouter()
 
-	router.Get("/", handlers.AllMetricsHandler)
-	router.Post("/update/{metricType}/{metricName}/{metricValue}", handlers.UpdateMetricHandler)
-	router.Get("/value/{metricType}/{metricName}", handlers.MetricHandler)
+	router.Get("/", allMetrcisHandler.New(storage))
+	router.Post("/update/{metricType}/{metricName}/{metricValue}", updateMetricHandler.New(storage))
+	router.Get("/value/{metricType}/{metricName}", metricHandler.New(storage))
 
 	return router
 }
@@ -21,7 +24,9 @@ func NewRouter() chi.Router {
 func main() {
 	parseFlags()
 
-	err := http.ListenAndServe(flagRunEndpoint, NewRouter())
+	s := storage.New()
+
+	err := http.ListenAndServe(flagRunEndpoint, NewRouter(s))
 	if err != nil {
 		panic(err)
 	}
