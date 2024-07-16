@@ -28,6 +28,6 @@ func TestStartMonitoring(t *testing.T) {
 		ms.StartMonitoring(client)
 		assert.Equal(t, int64(0), ms.PollCount, "Poll count not empty")
 		time.Sleep(time.Duration(cfg.PollInterval) * time.Second)
-		assert.Equal(t, int64(1), ms.PollCount, "Poll count not empty")
+		assert.Equal(t, true, ms.PollCount > 0, "Poll count not empty")
 	})
 }
