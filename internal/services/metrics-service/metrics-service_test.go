@@ -2,7 +2,7 @@ package metrics_service
 
 import (
 	"github.com/go-resty/resty/v2"
-	"github.com/sinobite/go-metrics/internal/config/agent_config"
+	"github.com/sinobite/go-metrics/internal/config/agent-config"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"

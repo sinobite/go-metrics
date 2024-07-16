@@ -2,10 +2,10 @@ package main
 
 import (
 	"github.com/go-chi/chi/v5"
-	"github.com/sinobite/go-metrics/internal/config/server_config"
-	"github.com/sinobite/go-metrics/internal/handlers/all_metrcis_handler"
-	"github.com/sinobite/go-metrics/internal/handlers/metric_handler"
-	"github.com/sinobite/go-metrics/internal/handlers/update_metric_handler"
+	"github.com/sinobite/go-metrics/internal/config/server-config"
+	"github.com/sinobite/go-metrics/internal/handlers/all-metrcis-handler"
+	"github.com/sinobite/go-metrics/internal/handlers/metric-handler"
+	"github.com/sinobite/go-metrics/internal/handlers/update-metric-handler"
 	"github.com/sinobite/go-metrics/internal/storage"
 	"net/http"
 )
