@@ -1,9 +1,11 @@
 package main
 
 import (
+	"context"
 	"github.com/go-resty/resty/v2"
 	"github.com/sinobite/go-metrics/internal/config/agentconfig"
 	"github.com/sinobite/go-metrics/internal/services/metricsservice"
+	"log"
 	"net/http"
 )
 
@@ -15,10 +17,12 @@ func main() {
 
 	client := resty.New()
 
-	ms.StartMonitoring(client)
+	ctx := context.Background()
 
-	err := http.ListenAndServe("localhost:8089", nil)
+	ms.StartMonitoring(ctx, client)
+
+	err := http.ListenAndServe(cfg.AgentRunEndpoint, nil)
 	if err != nil {
-		panic(err)
+		log.Fatalf("server stopped with error: %s", err)
 	}
 }

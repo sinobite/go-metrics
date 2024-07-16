@@ -7,6 +7,7 @@ import (
 	"github.com/sinobite/go-metrics/internal/handlers/metrichandler"
 	"github.com/sinobite/go-metrics/internal/handlers/updatemetrichandler"
 	"github.com/sinobite/go-metrics/internal/storage"
+	"log"
 	"net/http"
 )
 
@@ -28,6 +29,6 @@ func main() {
 
 	err := http.ListenAndServe(cfg.FlagRunEndpoint, NewRouter(s))
 	if err != nil {
-		panic(err)
+		log.Fatalf("server stopped with error: %s", err)
 	}
 }

@@ -1,11 +1,13 @@
 package metricsservice
 
 import (
+	"context"
 	"fmt"
 	"github.com/go-resty/resty/v2"
 	"github.com/sinobite/go-metrics/internal/config/agentconfig"
 	"runtime"
 	"strconv"
+	"sync"
 	"time"
 )
 
@@ -112,17 +114,35 @@ func (m *Monitor) doRequest(metricType string, metricName string, metricValue st
 	}
 }
 
-func (m *Monitor) StartMonitoring(client *resty.Client) {
-	go func() {
-		for {
-			m.Monitoring()
-			time.Sleep(time.Duration(m.cfg.PollInterval) * time.Second)
-		}
+func (m *Monitor) StartMonitoring(ctx context.Context, client *resty.Client) {
+	var wg sync.WaitGroup
+
+	pollTimer := time.NewTimer(time.Duration(m.cfg.PollInterval))
+	reportTimer := time.NewTimer(time.Duration(m.cfg.ReportInterval))
+	defer func() {
+		pollTimer.Stop()
+		reportTimer.Stop()
 	}()
-	go func() {
-		for {
-			time.Sleep(time.Duration(m.cfg.ReportInterval) * time.Second)
-			m.SendMetric(client)
+
+	for {
+		select {
+		case <-ctx.Done():
+			wg.Wait()
+			return
+		case <-pollTimer.C:
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				m.Monitoring()
+				pollTimer.Reset(time.Duration(m.cfg.PollInterval))
+			}()
+		case <-reportTimer.C:
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				m.SendMetric(client)
+				reportTimer.Reset(time.Duration(m.cfg.ReportInterval))
+			}()
 		}
-	}()
+	}
 }
