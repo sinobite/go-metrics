@@ -2,10 +2,10 @@ package main
 
 import (
 	"github.com/go-chi/chi/v5"
-	"github.com/sinobite/go-metrics/internal/config/server-config"
-	"github.com/sinobite/go-metrics/internal/handlers/all-metrcis-handler"
-	"github.com/sinobite/go-metrics/internal/handlers/metric-handler"
-	"github.com/sinobite/go-metrics/internal/handlers/update-metric-handler"
+	"github.com/sinobite/go-metrics/internal/config/serverconfig"
+	"github.com/sinobite/go-metrics/internal/handlers/allmetrcishandler"
+	"github.com/sinobite/go-metrics/internal/handlers/metrichandler"
+	"github.com/sinobite/go-metrics/internal/handlers/updatemetrichandler"
 	"github.com/sinobite/go-metrics/internal/storage"
 	"net/http"
 )
@@ -13,15 +13,15 @@ import (
 func NewRouter(storage storage.Storage) chi.Router {
 	router := chi.NewRouter()
 
-	router.Get("/", all_metrcis_handler.New(storage))
-	router.Post("/update/{metricType}/{metricName}/{metricValue}", update_metric_handler.New(storage))
-	router.Get("/value/{metricType}/{metricName}", metric_handler.New(storage))
+	router.Get("/", allmetrcishandler.New(storage))
+	router.Post("/update/{metricType}/{metricName}/{metricValue}", updatemetrichandler.New(storage))
+	router.Get("/value/{metricType}/{metricName}", metrichandler.New(storage))
 
 	return router
 }
 
 func main() {
-	cfg := server_config.New()
+	cfg := serverconfig.New()
 
 	s := storage.New()
 
