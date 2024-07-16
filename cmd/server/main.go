@@ -22,6 +22,7 @@ func NewRouter(storage storage.Storage) chi.Router {
 
 func main() {
 	cfg := serverconfig.New()
+	cfg.Parse()
 
 	s := storage.New()
 
