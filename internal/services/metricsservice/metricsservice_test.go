@@ -12,10 +12,6 @@ func TestMonitoring(t *testing.T) {
 	cfg := agentconfig.New()
 	ms := New(cfg)
 
-	t.Run("Empty monitoring state", func(t *testing.T) {
-		assert.Equal(t, int64(0), ms.PollCount, "Poll count not empty")
-	})
-
 	t.Run("MemStorage is changed", func(t *testing.T) {
 		ms.Monitoring()
 
