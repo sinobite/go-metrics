@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/sinobite/go-metrics/internal/logger"
 	"github.com/sinobite/go-metrics/internal/storage"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -26,7 +27,9 @@ func testRequest(t *testing.T, ts *httptest.Server, method, path string) (int, s
 
 func TestRouter(t *testing.T) {
 	s := storage.New()
-	ts := httptest.NewServer(NewRouter(s))
+	log := logger.New("debug")
+
+	ts := httptest.NewServer(NewRouter(s, log))
 	defer ts.Close()
 
 	var testTable = []struct {
